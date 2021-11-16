@@ -13,7 +13,12 @@ class MainUsers extends Model
         'username',
         'email',
         'phone',
+        'password',
         'admin_unique_token',
         'check_meal',
     ];
+
+    public function Mymeals(){
+        return $this->hasMany('App\Models\AllMeal','manager_unique_id','id');
+    }
 }

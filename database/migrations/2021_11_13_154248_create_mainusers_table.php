@@ -18,6 +18,7 @@ class CreateMainusersTable extends Migration
             $table->string('username',200)->nullable();
             $table->string('email',150)->nullable();
             $table->string('phone',150)->nullable(false);
+            $table->string('password',150)->nullable(false);
             $table->string('admin_unique_token',150)->nullable();
             $table->boolean('check_meal')->nullable();
             $table->timestamps();
