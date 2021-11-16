@@ -264,7 +264,8 @@ class ApiController extends Controller
 
     }
 
-    public function GetUserMeal(Request $request){
+    public function GetUserMeal(Request $request)
+    {
 
         $id = $request->get('id');
         $date = $request->get('date');
@@ -273,12 +274,11 @@ class ApiController extends Controller
         $users = DB::table('all_meal')
             ->select(DB::raw('SUM(breakfast+lunch+dinner) as totalmeal'))
             ->where('user_id', $id)
-            ->where('date','like', '%'.$date.'%')
+            ->where('date', 'like', '%' . $date . '%')
             ->get();
 
 
         return new JsonResponse($users);
-
     }
 
 }

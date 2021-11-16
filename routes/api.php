@@ -24,7 +24,6 @@ Route::POST('/manager-login',[
     'as' => 'api.manager-login',
     'uses' => 'App\Http\Controllers\ApiController@loginManager',
 ]);
-
 Route::POST('/create-member', 'App\Http\Controllers\ApiController@CreateMember');
 
 Route::POST('/member-login', 'App\Http\Controllers\ApiController@loginMember');
