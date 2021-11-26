@@ -35,3 +35,5 @@ Route::POST('/get-all-meal', 'App\Http\Controllers\ApiController@GetAllMeal');
 Route::POST('/get-total-meal', 'App\Http\Controllers\ApiController@GetTotalMeal');
 
 Route::POST('/get-user-total-meal', 'App\Http\Controllers\ApiController@GetUserMeal');
+
+Route::POST('/get-total-member', 'App\Http\Controllers\ApiController@GetTotalMember');
