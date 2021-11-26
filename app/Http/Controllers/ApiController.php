@@ -178,6 +178,19 @@ class ApiController extends Controller
 
     }
 
+    public function GetAllMember(Request $request)
+    {
+
+
+            $admin_token = $request->get('admin_unique_token');
+
+            $users = Members::where('manager_unique_token', $admin_token)->get();
+
+
+            return new JsonResponse($users);
+
+    }
+
 
     public function InsertMeal(Request $request)
     {
