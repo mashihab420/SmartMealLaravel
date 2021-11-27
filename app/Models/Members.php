@@ -21,4 +21,8 @@ class Members extends Model
     public function Mymeals(){
         return $this->hasMany('App\Models\AllMeal','user_id','id');
     }
+
+    public function mainUser(){
+        return $this->belongsTo(MainUsers::class);
+    }
 }

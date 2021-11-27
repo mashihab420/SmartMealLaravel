@@ -19,6 +19,10 @@ class MainUsers extends Model
     ];
 
     public function Mymeals(){
-        return $this->hasMany('App\Models\AllMeal','manager_unique_id','id');
+        return $this->hasMany(AllMeal::class,'manager_unique_id','id');
+    }
+
+    public function members(){
+        return $this->hasMany(Members::class,'main_user_id','id');
     }
 }

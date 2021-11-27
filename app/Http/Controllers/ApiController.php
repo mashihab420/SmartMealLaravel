@@ -37,16 +37,16 @@ class ApiController extends Controller
             $mainusers->admin_unique_token = $request->admin_unique_token;
             $mainusers->check_meal = $request->check_meal;
             $mainusers->save();
-
-
             $members = new Members();
             $members->username = $request->username;
             $members->email = $request->email;
             $members->phone = $request->phone;
             $members->password = $request->password;
-            $members->manager_unique_token = $request->admin_unique_token;
+            $members->manager_unique_token = $mainusers->admin_unique_token;
             $members->check_meal = $request->check_meal;
-            $members->save();
+            $mainusers->members()->save($members);
+
+
 
 
             return response()->json([
@@ -99,16 +99,11 @@ class ApiController extends Controller
 
     public function CreateMember(Request $request)
     {
-
-
-        /* $phone = $request->get('phone');
-         $password = $request->get('password');*/
         $token = $request->get('manager_unique_token');
-
 
         $phone = $request->get('phone');
 
-        $mainuser = MainUsers::where('phone', $phone)->first();
+        $mainuser = Members::where('phone', $phone)->first();
 
         if ($mainuser) {
             return new JsonResponse(array("message" => "Phone Number Already Register"));
@@ -122,13 +117,13 @@ class ApiController extends Controller
                 $members->email = $request->email;
                 $members->phone = $request->phone;
                 $members->password = $request->password;
-                $members->manager_unique_token = $request->manager_unique_token;
+                $members->manager_unique_token = $mainuser->admin_unique_token;
                 $members->check_meal = $request->check_meal;
-                $members->save();
+                $mainuser->members()->save($members);
 
                 return response()->json([
                     "message" => "Member created"
-                ], 201);
+                ], 200);
             } else {
                 return response()->json([
                     "message" => "Manager Token Not Found"
@@ -184,7 +179,7 @@ class ApiController extends Controller
 
             $admin_token = $request->get('admin_unique_token');
 
-            $users = Members::where('manager_unique_token', $admin_token)->get();
+            $users = Members::where('manager_unique_token', $admin_token)->where('check_meal', 1)->get();
 
 
             return new JsonResponse($users);
@@ -201,14 +196,12 @@ class ApiController extends Controller
         $data = $request->get('meal');
         $data = json_decode($data, true);
 
-        $meals = [
-            "manager_token" => $manager_token,
-            "meal" => $data
-
-        ];
+        $users = AllMeal::where('date', $date)->first();
 
 
-        foreach ($meals['meal'] as $meal) {
+        if ($users == null){
+
+             foreach ($data as $meal) {
 
             $allmeal = new AllMeal();
             $allmeal->manager_unique_id = $manager_token;
@@ -230,9 +223,21 @@ class ApiController extends Controller
         } else {
             return new JsonResponse([
                 'message' => 'Success',
-                'status' => 201
+                'status' => 200
             ]);
         }
+
+
+        }else{
+            return new JsonResponse([
+                'message' => 'Today\'s Meal Already Added',
+                'status' => 500
+            ]);
+        }
+
+
+
+
 
 
     }

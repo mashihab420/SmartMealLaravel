@@ -17,5 +17,4 @@ class AllMeal extends Model
         'dinner',
         'date'
     ];
-
 }

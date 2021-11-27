@@ -15,6 +15,7 @@ class CreateMembersTable extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('main_user_id')->unsigned()->nullable(true);
             $table->string('username',200)->nullable();
             $table->string('email',150)->nullable();
             $table->string('phone',150)->nullable(false);
@@ -22,6 +23,13 @@ class CreateMembersTable extends Migration
             $table->string('manager_unique_token',150)->nullable();
             $table->boolean('check_meal')->nullable();
             $table->timestamps();
+
+
+            $table->foreign('main_user_id')
+                ->references('id')
+                ->on('mainusers')
+                ->onDelete('cascade');
+
         });
     }
 
