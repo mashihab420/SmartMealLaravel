@@ -45,4 +45,8 @@ Route::POST('/insert-deposit', [ApiController::class,'InsertDeposit']);
 
 Route::POST('/insert-expense', [ApiController::class,'InsertExpense']);
 
-Route::POST('/update-member-fcm', [ApiController::class,'UpdateFCM']);
+Route::POST('/update-manager-fcm', [ApiController::class,'UpdateManagerFCM']);
+
+Route::POST('/update-member-fcm', [ApiController::class,'UpdateMemberFCM']);
+
+Route::POST('/get-all-fcm', [ApiController::class,'getAllFCMToken']);

@@ -102,7 +102,7 @@ class ApiController extends Controller
 
     public function CreateMember(Request $request)
     {
-        $mainuserId = $request->get('main_user_id');
+        $mainuserToken = $request->get('manager_unique_token');
         $token = $request->get('fcm_token');
 
         $phone = $request->get('phone');
@@ -113,7 +113,7 @@ class ApiController extends Controller
             return new JsonResponse(array("message" => "Phone Number Already Register"));
         } else {
 
-            $mainuser = MainUsers::where('id', $mainuserId)->first();
+            $mainuser = MainUsers::where('admin_unique_token', $mainuserToken)->first();
 
             if ($mainuser != null) {
                 $members = new Members();
@@ -140,28 +140,86 @@ class ApiController extends Controller
 
     }
 
-    public function UpdateFCM(Request $request)
+    public function UpdateManagerFCM(Request $request)
     {
 
         $managerId = $request->get('main_user_id');
         $token = $request->get('fcm_token');
 
 
-       $users =  Members::where('main_user_id', $managerId)->update([
-            'fcm_token'=>$token,
+        $users = Members::where('main_user_id', $managerId)->update([
+            'fcm_token' => $token,
         ]);
 
-       if ($users){
-           return new JsonResponse([
-               'message' => 'FCM Token Change',
-               'status' => 200
-           ]);
-       }else{
-           return new JsonResponse([
-               'message' => 'invalid',
-               'status' => 404
-           ]);
-       }
+        if ($users) {
+            return new JsonResponse([
+                'message' => 'FCM Token Change',
+                'status' => 200
+            ]);
+        } else {
+            return new JsonResponse([
+                'message' => 'invalid',
+                'status' => 404
+            ]);
+        }
+
+    }
+
+    public function UpdateMemberFCM(Request $request)
+    {
+
+        $id = $request->get('id');
+        $token = $request->get('fcm_token');
+
+
+        $users = Members::where('id', $id)->update([
+            'fcm_token' => $token,
+        ]);
+
+        if ($users) {
+            return new JsonResponse([
+                'message' => 'FCM Token Change',
+                'status' => 200
+            ]);
+        } else {
+            return new JsonResponse([
+                'message' => 'invalid',
+                'status' => 404
+            ]);
+        }
+
+    }
+
+
+    public function getAllFCMToken(Request $request)
+    {
+
+        $managerId = $request->get('main_user_id');
+
+
+        $users = Members::where('main_user_id', $managerId)->get();
+
+        $datas = [];
+        foreach ($users as $data) {
+            $datas[] = $data['fcm_token'];
+
+
+        }
+
+        return new JsonResponse(array("token"=>$datas));
+
+
+        if ($users) {
+            return new JsonResponse([
+                'message' => 'FCM Token Change',
+                'status' => 200
+            ]);
+        } else {
+            return new JsonResponse([
+                'message' => 'invalid',
+                'status' => 404
+            ]);
+        }
 
     }
 
@@ -279,11 +337,11 @@ class ApiController extends Controller
         $userId = $request->get('user_id');
         $depositcost = $request->get('member_deposit');
 
-       // $data = $request->('');
+        // $data = $request->('');
         $managers = MainUsers::where('id', $manager_token)->first();
         $users = Members::where('id', $userId)->first();
 
-        if($managers != null && $users !=null){
+        if ($managers != null && $users != null) {
 
             $deposit = new Deposit();
             $deposit->manager_unique_id = $manager_token;
@@ -291,7 +349,6 @@ class ApiController extends Controller
             $deposit->user_id = $userId;
             $deposit->member_deposit = $depositcost;
             $deposit->save();
-
 
 
             //Check if user was created
@@ -325,7 +382,7 @@ class ApiController extends Controller
 
         $managers = MainUsers::where('id', $manager_token)->first();
 
-        if($managers != null){
+        if ($managers != null) {
 
             $deposit = new Expense();
             $deposit->manager_unique_id = $manager_token;
@@ -427,7 +484,7 @@ class ApiController extends Controller
         $id = $request->get('id');
         // $date = $request->get('date');
         $requestDate = $request->get('date');
-       // $date = date('Y-m-d', strtotime($requestDate));
+        // $date = date('Y-m-d', strtotime($requestDate));
 
         $users = DB::table('all_meal')
             ->select(DB::raw('SUM(breakfast+lunch+dinner) as totalmeal'))
