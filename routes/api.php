@@ -44,3 +44,5 @@ Route::POST('/get-total-member', 'App\Http\Controllers\ApiController@GetTotalMem
 Route::POST('/insert-deposit', [ApiController::class,'InsertDeposit']);
 
 Route::POST('/insert-expense', [ApiController::class,'InsertExpense']);
+
+Route::POST('/update-member-fcm', [ApiController::class,'UpdateFCM']);

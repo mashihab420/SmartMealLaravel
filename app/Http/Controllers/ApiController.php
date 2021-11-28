@@ -140,6 +140,31 @@ class ApiController extends Controller
 
     }
 
+    public function UpdateFCM(Request $request)
+    {
+
+        $managerId = $request->get('main_user_id');
+        $token = $request->get('fcm_token');
+
+
+       $users =  Members::where('main_user_id', $managerId)->update([
+            'fcm_token'=>$token,
+        ]);
+
+       if ($users){
+           return new JsonResponse([
+               'message' => 'FCM Token Change',
+               'status' => 200
+           ]);
+       }else{
+           return new JsonResponse([
+               'message' => 'invalid',
+               'status' => 404
+           ]);
+       }
+
+    }
+
 
     public function loginMember(Request $request)
     {
