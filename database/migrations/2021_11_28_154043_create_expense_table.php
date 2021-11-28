@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAllmealTable extends Migration
+class CreateExpenseTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateAllmealTable extends Migration
      */
     public function up()
     {
-        Schema::create('all_meal', function (Blueprint $table) {
+        Schema::create('expense', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('manager_unique_id')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->double('breakfast')->nullable();
-            $table->double('lunch')->nullable();
-            $table->double('dinner')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable(true);
+            $table->double('grocery_cost')->nullable();
+            $table->double('other_cost')->nullable(true);
+            $table->String('description')->nullable();
             $table->date('date')->nullable();
             $table->timestamps();
 
@@ -42,6 +42,6 @@ class CreateAllmealTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('all_meal');
+        Schema::dropIfExists('expense');
     }
 }

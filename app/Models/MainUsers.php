@@ -25,4 +25,12 @@ class MainUsers extends Model
     public function members(){
         return $this->hasMany(Members::class,'main_user_id','id');
     }
+    public function memberDeposit(){
+        return $this->hasMany(Deposit::class,'main_user_id','id');
+    }
+
+    public function mealExpense(){
+        return $this->hasMany(Expense::class,'main_user_id','id');
+    }
+
 }

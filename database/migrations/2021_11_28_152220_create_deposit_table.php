@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAllmealTable extends Migration
+class CreateDepositTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateAllmealTable extends Migration
      */
     public function up()
     {
-        Schema::create('all_meal', function (Blueprint $table) {
+        Schema::create('deposit', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('manager_unique_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->double('breakfast')->nullable();
-            $table->double('lunch')->nullable();
-            $table->double('dinner')->nullable();
+            $table->double('member_deposit')->nullable();
             $table->date('date')->nullable();
             $table->timestamps();
 
@@ -33,6 +31,7 @@ class CreateAllmealTable extends Migration
                 ->on('members')
                 ->onDelete('cascade');
         });
+
     }
 
     /**
@@ -42,6 +41,6 @@ class CreateAllmealTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('all_meal');
+        Schema::dropIfExists('deposit');
     }
 }

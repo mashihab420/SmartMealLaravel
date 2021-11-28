@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,3 +40,7 @@ Route::POST('/get-total-meal', 'App\Http\Controllers\ApiController@GetTotalMeal'
 Route::POST('/get-user-total-meal', 'App\Http\Controllers\ApiController@GetUserMeal');
 
 Route::POST('/get-total-member', 'App\Http\Controllers\ApiController@GetTotalMember');
+
+Route::POST('/insert-deposit', [ApiController::class,'InsertDeposit']);
+
+Route::POST('/insert-expense', [ApiController::class,'InsertExpense']);

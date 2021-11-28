@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DefaultController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,14 +28,14 @@ Route::get('/shihab', 'App\Http\Controllers\DefaultController@createManager');
 
 Route::get('/crud', 'App\Http\Controllers\DefaultController@crud');
 
-Route::POST('/manager/create', [\App\Http\Controllers\DefaultController::class,'storeManager']);
+Route::POST('/manager/create', [DefaultController::class,'storeManager']);
 
-Route::GET('/manager/edit/{id}', [\App\Http\Controllers\DefaultController::class,'editManager']);
-Route::POST('/manager/update/{id}', [\App\Http\Controllers\DefaultController::class,'managerUpdate']);
+Route::GET('/manager/edit/{id}', [DefaultController::class,'editManager']);
+Route::POST('/manager/update/{id}', [DefaultController::class,'managerUpdate']);
 
-Route::GET('/manager/delete/{id}', [\App\Http\Controllers\DefaultController::class,'managerDelete']);
+Route::GET('/manager/delete/{id}', [DefaultController::class,'managerDelete']);
 
-Route::GET('/manager/search', [\App\Http\Controllers\DefaultController::class,'searchManager']);
+Route::GET('/manager/search', [DefaultController::class,'searchManager']);
 
 
 
