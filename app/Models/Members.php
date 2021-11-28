@@ -15,6 +15,7 @@ class Members extends Model
         'phone',
         'password',
         'manager_unique_token',
+        'fcm_token',
         'check_meal',
     ];
 

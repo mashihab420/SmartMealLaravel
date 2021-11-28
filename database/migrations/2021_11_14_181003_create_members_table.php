@@ -21,6 +21,7 @@ class CreateMembersTable extends Migration
             $table->string('phone',150)->nullable(false);
             $table->string('password',150)->nullable(false);
             $table->string('manager_unique_token',150)->nullable();
+            $table->string('fcm_token',500)->nullable();
             $table->boolean('check_meal')->nullable();
             $table->timestamps();
 

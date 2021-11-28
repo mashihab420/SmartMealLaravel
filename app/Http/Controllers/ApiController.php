@@ -25,6 +25,7 @@ class ApiController extends Controller
         $input = $request->all();
 
         $phone = $request->get('phone');
+        $token = $request->get('fcm_token');
 
         $mainuser = MainUsers::where('phone', $phone)->first();
 
@@ -46,6 +47,7 @@ class ApiController extends Controller
             $members->phone = $request->phone;
             $members->password = $request->password;
             $members->manager_unique_token = $mainusers->admin_unique_token;
+            $members->fcm_token = $token;
             $members->check_meal = $request->check_meal;
             $mainusers->members()->save($members);
 
@@ -101,6 +103,7 @@ class ApiController extends Controller
     public function CreateMember(Request $request)
     {
         $mainuserId = $request->get('main_user_id');
+        $token = $request->get('fcm_token');
 
         $phone = $request->get('phone');
 
@@ -119,6 +122,7 @@ class ApiController extends Controller
                 $members->phone = $request->phone;
                 $members->password = $request->password;
                 $members->manager_unique_token = $mainuser->admin_unique_token;
+                $members->fcm_token = $token;
                 $members->check_meal = $request->check_meal;
                 $mainuser->members()->save($members);
 
