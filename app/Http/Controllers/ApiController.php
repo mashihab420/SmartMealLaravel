@@ -197,7 +197,7 @@ class ApiController extends Controller
         $managerId = $request->get('main_user_id');
 
 
-        $users = Members::where('main_user_id', $managerId)->get();
+        $users = Members::where('main_user_id', $managerId)->where('fcm_token','!=','null')->where('fcm_token','!=','')->get();
 
         $datas = [];
         foreach ($users as $data) {
@@ -220,6 +220,35 @@ class ApiController extends Controller
                 'status' => 404
             ]);
         }
+
+    }
+
+
+    public function removeFCMToken(Request $request)
+    {
+
+        $userId = $request->get('user_id');
+
+
+        $users = Members::where('id', $userId)->first();
+
+
+        if ($users != null){
+
+            Members::where('id', $userId)->update([
+                'fcm_token' => null,
+            ]);
+
+            return new JsonResponse(array("message"=>"token Deleted"));
+
+        }else{
+
+            return new JsonResponse(array("message"=>"User not match"));
+        }
+
+
+
+
 
     }
 
