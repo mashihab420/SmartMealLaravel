@@ -528,6 +528,116 @@ class ApiController extends Controller
         return new JsonResponse($users);
     }
 
+    public function totalCalculation(Request $request)
+    {
+
+        $main_user_id = $request->get('main_user_id');
+        $requestDate = $request->get('date');
+
+
+        $totalDeposit = DB::table('deposit')
+            ->select(DB::raw('SUM(member_deposit) as totalBalance'))
+            ->where('manager_unique_id', $main_user_id)
+            ->whereYear('date', '=', $this->getMonthStringToDate($requestDate, "Y"))
+            ->whereMonth('date', '=', $this->getMonthStringToDate($requestDate))
+            ->first();
+
+        $totalExpense = DB::table('expense')
+            ->select(DB::raw('SUM(grocery_cost+other_cost) as totalExpense'))
+            ->where('manager_unique_id', $main_user_id)
+            ->whereYear('date', '=', $this->getMonthStringToDate($requestDate, "Y"))
+            ->whereMonth('date', '=', $this->getMonthStringToDate($requestDate))
+            ->first();
+
+        $totalMeal = DB::table('all_meal')
+            ->select(DB::raw('SUM(breakfast+lunch+dinner) as totalMeal'))
+            ->where('manager_unique_id', $main_user_id)
+            ->whereYear('date', '=', $this->getMonthStringToDate($requestDate, "Y"))
+            ->whereMonth('date', '=', $this->getMonthStringToDate($requestDate))
+            ->first();
+
+        $expensevalue = $totalExpense->totalExpense;
+        $mealvalue = $totalMeal->totalMeal;
+
+        $totalMealRate = ( $expensevalue / $mealvalue );
+
+        return new JsonResponse(array(
+            "deposit"=>$totalDeposit->totalBalance,
+            "expense"=>$totalExpense->totalExpense,
+            "totalMeal"=>$totalMeal->totalMeal,
+            "mealRate"=>$totalMealRate
+        ));
+    }
+
+    public function myCalculation(Request $request)
+    {
+
+        $main_user_id = $request->get('main_user_id');
+        $userid = $request->get('user_id');
+        $requestDate = $request->get('date');
+
+
+        $totalDeposit = DB::table('deposit')
+            ->select(DB::raw('SUM(member_deposit) as totalBalance'))
+            ->where('manager_unique_id', $main_user_id)
+            ->where('user_id', $userid)
+            ->whereYear('date', '=', $this->getMonthStringToDate($requestDate, "Y"))
+            ->whereMonth('date', '=', $this->getMonthStringToDate($requestDate))
+            ->first();
+
+        $totalExpense = DB::table('expense')
+            ->select(DB::raw('SUM(grocery_cost+other_cost) as totalExpense'))
+            ->where('manager_unique_id', $main_user_id)
+            ->whereYear('date', '=', $this->getMonthStringToDate($requestDate, "Y"))
+            ->whereMonth('date', '=', $this->getMonthStringToDate($requestDate))
+            ->first();
+
+        $totalMeal = DB::table('all_meal')
+            ->select(DB::raw('SUM(breakfast+lunch+dinner) as totalMeal'))
+            ->where('manager_unique_id', $main_user_id)
+            ->whereYear('date', '=', $this->getMonthStringToDate($requestDate, "Y"))
+            ->whereMonth('date', '=', $this->getMonthStringToDate($requestDate))
+            ->first();
+
+
+        $expensevalue = $totalExpense->totalExpense;
+        $mealvalue = $totalMeal->totalMeal;
+
+        $totalMealRate = ( $expensevalue / $mealvalue );
+
+
+
+
+
+        $myTotalMeal = DB::table('all_meal')
+            ->select(DB::raw('SUM(breakfast+lunch+dinner) as totalMeal'))
+            ->where('manager_unique_id', $main_user_id)
+            ->where('user_id', $userid)
+            ->whereYear('date', '=', $this->getMonthStringToDate($requestDate, "Y"))
+            ->whereMonth('date', '=', $this->getMonthStringToDate($requestDate))
+            ->first();
+
+        $mymealvalue = $myTotalMeal->totalMeal;
+
+        $myTotalCost = ( $mymealvalue * $totalMealRate );
+
+        $myBalance = ( $totalDeposit->totalBalance - $myTotalCost );
+/*
+        $expensevalue = $totalExpense->totalExpense;
+        $mealvalue = $totalMeal->totalMeal;
+
+        $totalMealRate = ( $expensevalue / $mealvalue );*/
+
+        return new JsonResponse(array(
+            "mydeposit"=>$totalDeposit->totalBalance,
+           // "expense"=>$totalExpense->totalExpense,
+            "mytotalMeal"=>$myTotalMeal->totalMeal,
+            "mealRate"=>$totalMealRate,
+            "myCost"=>$myTotalCost,
+            "myBalance"=>$myBalance
+        ));
+    }
+
     private function getMonthStringToDate($data, $format = 'm')
     {
         $time = strtotime($data);

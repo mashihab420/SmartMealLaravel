@@ -52,3 +52,7 @@ Route::POST('/update-member-fcm', [ApiController::class,'UpdateMemberFCM']);
 Route::POST('/get-all-fcm', [ApiController::class,'getAllFCMToken']);
 
 Route::POST('/remove-fcm', [ApiController::class,'removeFCMToken']);
+
+Route::POST('/total-calculation', [ApiController::class,'totalCalculation']);
+
+Route::POST('/my-calculation', [ApiController::class,'myCalculation']);
