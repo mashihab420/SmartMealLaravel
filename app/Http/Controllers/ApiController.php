@@ -227,7 +227,15 @@ class ApiController extends Controller
     public function loginMember(Request $request)
     {
 
-        if ($request->headers->get('Accept') == 'application/json' && $request->headers->get('X-API-KEY') == 'smartmeal' && $request->headers->get('X-API-SECRET') == '8821') {
+      /*  if ($request->headers->get('Accept') == 'application/json' && $request->headers->get('X-API-KEY') == 'smartmeal' && $request->headers->get('X-API-SECRET') == '8821') {
+
+
+        } else {
+            return new JsonResponse([
+                'message' => 'Invalied request',
+                'status' => 500
+            ]);
+        }*/
 
 
             $phone = $request->get('phone');
@@ -252,12 +260,6 @@ class ApiController extends Controller
                 ]);
             }
 
-        } else {
-            return new JsonResponse([
-                'message' => 'Invalied request',
-                'status' => 500
-            ]);
-        }
 
     }
 
