@@ -410,6 +410,7 @@ class ApiController extends Controller
         $grocery_cost = $request->get('grocery_cost');
         $other_cost = $request->get('other_cost');
         $description = $request->get('description');
+        $userId = $request->get('user_id');
 
         $managers = MainUsers::where('id', $manager_token)->first();
 
@@ -417,6 +418,7 @@ class ApiController extends Controller
 
             $deposit = new Expense();
             $deposit->manager_unique_id = $manager_token;
+            $deposit->user_id = $userId;
             $deposit->grocery_cost = $grocery_cost;
             $deposit->other_cost = $other_cost;
             $deposit->description = $description;
