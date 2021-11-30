@@ -276,6 +276,7 @@ class ApiController extends Controller
                 $data = [
                     'id' => (integer)$users['id'],
                     'username' => (string)$users['username'],
+                    'manager_id' => (integer)$users['main_user_id'],
                     'email' => (string)$users['email'],
                     'phone' => (string)$users['phone'],
                     'check_meal' => (bool)$users['check_meal'],
@@ -562,6 +563,7 @@ class ApiController extends Controller
         $totalMealRate = ( $expensevalue / $mealvalue );
 
         return new JsonResponse(array(
+
             "deposit"=>$totalDeposit->totalBalance,
             "expense"=>$totalExpense->totalExpense,
             "totalMeal"=>$totalMeal->totalMeal,
