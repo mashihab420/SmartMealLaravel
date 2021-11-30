@@ -80,9 +80,12 @@ class ApiController extends Controller
 
         $mainuser = MainUsers::where('phone', $phone)->where('password', $password)->first();
 
+        $member = Members::where('phone', $phone)->first();
+
         if ($mainuser != null) {
             $data = [
                 'id' => (integer)$mainuser['id'],
+                'member_id' => (integer)$member['id'],
                 'username' => (string)$mainuser['username'],
                 'email' => (string)$mainuser['email'],
                 'phone' => (string)$mainuser['phone'],
@@ -558,16 +561,20 @@ class ApiController extends Controller
             ->first();
 
         $expensevalue = $totalExpense->totalExpense;
+        $depositvalue = $totalDeposit->totalBalance;
         $mealvalue = $totalMeal->totalMeal;
 
         $totalMealRate = ( $expensevalue / $mealvalue );
+
+        $totalBalance = ( $depositvalue -  $expensevalue);
 
         return new JsonResponse(array(
 
             "deposit"=>$totalDeposit->totalBalance,
             "expense"=>$totalExpense->totalExpense,
             "totalMeal"=>$totalMeal->totalMeal,
-            "mealRate"=>$totalMealRate
+            "mealRate"=>$totalMealRate,
+            "totalBalance"=>$totalBalance
         ));
     }
 
